@@ -1,13 +1,11 @@
-import { readdir } from "node:fs/promises";
 import path from "node:path";
-import curPath from "../utils/current-path.js";
+
+import currentPath from "../utils/current-path.js";
 
 export const operationUp = async () => {
-  const pathNow = curPath.getPath();
+  const pathNow = currentPath.getPath();
 
-  const pathArray = pathNow.split(":");
-  if (pathArray.length > 1) {
-    curPath.setPath(path.dirname(pathNow));
-  }
+  currentPath.setPath(path.dirname(pathNow));
+
   return;
 };

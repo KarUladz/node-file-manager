@@ -1,10 +1,10 @@
 import { readdir } from "node:fs/promises";
 
-import curPath from "../utils/current-path.js";
+import currentPath from "../utils/current-path.js";
 
 export const operationLs = async () => {
   try {
-    const path = curPath.getPath();
+    const path = currentPath.getPath();
     const dirFiles = await readdir(path, {
       withFileTypes: true,
       encoding: "utf-8",

@@ -14,6 +14,6 @@ class CurrentPath {
   }
 }
 
-const curPath = new CurrentPath();
+const currentPath = new CurrentPath();
 
-export default curPath;
+export default currentPath;

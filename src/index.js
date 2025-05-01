@@ -6,7 +6,7 @@ import {
   getUserName,
   checkCommandLine,
 } from "./utils/index.js";
-import curPath from "./utils/current-path.js";
+import currentPath from "./utils/current-path.js";
 
 const appRun = () => {
   const rl = readline.createInterface({
@@ -17,13 +17,13 @@ const appRun = () => {
   const user = getUserName();
 
   rl.output.write(
-    `Welcome to the File Manager, ${user}!\nYou are currently in ${curPath.getPath()}\n`
+    `Welcome to the File Manager, ${user}!\nYou are currently in ${currentPath.getPath()}\n`
   );
 
   rl.on("line", async (input) => {
     await checkCommandLine(input);
     rl.output.write(
-      `\nYou are currently in ${curPath.getPath()}\n`
+      `\nYou are currently in ${currentPath.getPath()}\n`
     );
   });
 
