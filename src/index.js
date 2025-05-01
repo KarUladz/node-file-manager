@@ -5,8 +5,8 @@ import { closeFIleManager } from "./services/index.js";
 import {
   getUserName,
   checkCommandLine,
-  getCurrentPath,
 } from "./utils/index.js";
+import curPath from "./utils/current-path.js";
 
 const appRun = () => {
   const rl = readline.createInterface({
@@ -17,11 +17,14 @@ const appRun = () => {
   const user = getUserName();
 
   rl.output.write(
-    `Welcome to the File Manager, ${user}!\nYou are currently in ${getCurrentPath()}\n`
+    `Welcome to the File Manager, ${user}!\nYou are currently in ${curPath.getPath()}\n`
   );
 
   rl.on("line", async (input) => {
     await checkCommandLine(input);
+    rl.output.write(
+      `\nYou are currently in ${curPath.getPath()}\n`
+    );
   });
 
   process.on("exit", () => closeFIleManager(user));

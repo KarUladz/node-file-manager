@@ -1,15 +1,17 @@
 import process from "node:process";
 
-import { operationLs } from "../services/index.js";
-
+import { operationLs, operationUp } from "../services/index.js";
 
 export const checkCommandLine = async (data) => {
-  switch (data.split(' ')[0]) {
+  switch (data.split(" ")[0]) {
     case ".exit":
       process.exit();
       break;
     case "ls":
-      await operationLs()
+      await operationLs();
+      break;
+    case "up":
+      await operationUp();
       break;
     default:
       process.stdout.write("\nInvalid input! Try again:\n");
