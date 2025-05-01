@@ -17,11 +17,11 @@ const appRun = () => {
   const user = getUserName();
 
   rl.output.write(
-    `Welcome to the File Manager, ${user}!\n${getCurrentPath()}\n`
+    `Welcome to the File Manager, ${user}!\nYou are currently in ${getCurrentPath()}\n`
   );
 
   rl.on("line", async (input) => {
-    checkCommandLine(input);
+    await checkCommandLine(input);
   });
 
   process.on("exit", () => closeFIleManager(user));
