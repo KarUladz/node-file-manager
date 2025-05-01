@@ -10,12 +10,15 @@ export const operationLs = async () => {
       encoding: "utf-8",
     });
 
-    const filesObjArray = dirFiles.map((file) => {
-      return {
-        name: file.name,
-        type: file.isDirectory() ? "directory" : "file",
-      };
-    });
+    const filesObjArray = dirFiles
+      .map((file) => {
+        return {
+          name: file.name,
+          type: file.isDirectory() ? "directory" : file.isFile() ? "file" : "",
+        };
+      })
+      .filter((item) => item.type !== "");
+
     console.table(filesObjArray);
   } catch (error) {
     process.stdout.write("Operation failed\n");
