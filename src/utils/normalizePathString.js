@@ -1,0 +1,32 @@
+import path from "node:path";
+
+import currentPath from "./current-path.js";
+
+export const normalizePathString = (commandKey, data) => {
+  const curPath = currentPath.getPath();
+
+  let userPath = data.replace(commandKey, "").trim();
+
+  if (userPath.includes("'") || userPath.includes('"')) {
+    userPath = cleanString(userPath);
+  }
+
+  const findWinSep = userPath.indexOf(":");
+
+  if (findWinSep === 1) {
+    const uPath = userPath[0].toUpperCase() + userPath.slice(1);
+
+    return path.normalize(path.join(uPath));
+  } else {
+    return path.normalize(path.join(curPath, userPath));
+  }
+};
+
+const cleanString = (string) => {
+  const clearString = string
+    .split("")
+    .filter((item) => item !== "'" && item !== '"')
+    .join("");
+
+  return clearString;
+};

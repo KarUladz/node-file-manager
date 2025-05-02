@@ -1,14 +1,18 @@
 import process from "node:process";
 
-import { operationCd, operationLs, operationUp } from "../services/index.js";
+import { operationCat, operationCd, operationLs, operationUp } from "../services/index.js";
 
 export const checkCommandLine = async (data) => {
-  switch (data.split(" ")[0]) {
+  const commandKey = data.split(" ")[0]; 
+  switch (commandKey) {
     case ".exit":
       process.exit();
       break;
+    case "cat":
+      await operationCat(commandKey, data);
+      break;
     case "cd":
-      await operationCd(data);
+      await operationCd(commandKey, data);
       break;
     case "ls":
       await operationLs();
