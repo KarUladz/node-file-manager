@@ -14,6 +14,7 @@ export const normalizePathString = (commandKey, data) => {
   const findWinSep = userPath.indexOf(":");
 
   if (findWinSep === 1) {
+    if (userPath.length === 2) userPath = `${userPath}/`;
     const uPath = userPath[0].toUpperCase() + userPath.slice(1);
 
     return path.normalize(path.join(uPath));
