@@ -1,6 +1,6 @@
 import fs from "node:fs/promises";
 
-import { normalizePathString } from "../utils/normalizePathString.js";
+import { normalizePathString } from "../../utils/normalizePathString.js";
 
 export const createDirectory = async (comandKey, data) => {
   const normalizePath = normalizePathString(comandKey, data);

@@ -2,12 +2,12 @@ import process from "node:process";
 
 import {
   createDirectory,
-  operationAddFile,
-  operationCat,
+  createEmptyFile,
   operationCd,
   operationLs,
   operationUp,
 } from "../services/index.js";
+import { readFile } from "../services/fs/readFile.js";
 
 export const checkCommandLine = async (data) => {
   const commandKey = data.split(" ")[0];
@@ -16,10 +16,10 @@ export const checkCommandLine = async (data) => {
       process.exit();
       break;
     case "add":
-      await operationAddFile(commandKey, data);
+      await createEmptyFile(commandKey, data);
       break;
     case "cat":
-      await operationCat(commandKey, data);
+      await readFile(commandKey, data);
       break;
     case "cd":
       await operationCd(commandKey, data);

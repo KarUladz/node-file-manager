@@ -24,10 +24,8 @@ export const normalizePathString = (commandKey, data) => {
 };
 
 const cleanString = (string) => {
-  const clearString = string
+  return string
     .split("")
     .filter((item) => item !== "'" && item !== '"')
     .join("");
-
-  return clearString;
 };

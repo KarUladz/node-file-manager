@@ -2,7 +2,7 @@ import { createReadStream } from "node:fs";
 import { access, stat } from "node:fs/promises";
 import { normalizePathString } from "../utils/normalizePathString.js";
 
-export const operationCat = async (comandKey, data) => {
+export const readFile = async (comandKey, data) => {
   const normalizePath = normalizePathString(comandKey, data);
 
   try {
