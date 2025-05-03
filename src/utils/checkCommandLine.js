@@ -6,11 +6,12 @@ import {
   operationCd,
   operationLs,
   operationUp,
+  readFile,
+  renameFile,
 } from "../services/index.js";
-import { readFile } from "../services/fs/readFile.js";
 
 export const checkCommandLine = async (data) => {
-  const commandKey = data.split(" ")[0];
+  const commandKey = data.split(" ")[0].trim();
   switch (commandKey) {
     case ".exit":
       process.exit();
@@ -29,6 +30,9 @@ export const checkCommandLine = async (data) => {
       break;
     case "ls":
       await operationLs();
+      break;
+    case "rn":
+      await renameFile(commandKey, data);
       break;
     case "up":
       await operationUp();
