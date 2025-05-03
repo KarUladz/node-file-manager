@@ -1,13 +1,14 @@
 import fs from "node:fs/promises";
 
 import { normalizePathString } from "../../utils/normalizePathString.js";
+import { getPathsArrayFromString } from "../../utils/getPathsArrayFromString.js";
 
 export const renameFile = async (commandKey, data) => {
   const updateData = data.replace(commandKey, "");
   let dataArray = [];
 
   if (updateData.includes("'") || updateData.includes('"')) {
-    dataArray = cleanFileName(updateData);
+    dataArray = getPathsArrayFromString(updateData);
   } else {
     dataArray = data.trim().split(" ");
   }
@@ -33,19 +34,6 @@ export const renameFile = async (commandKey, data) => {
         });
       });
   } catch {
-    process.stdout.write("Operation failed");
+    console.log("Operation failed");
   }
-};
-
-const cleanFileName = (data) => {
-  if (data.includes("'"))
-    return data
-      .split("'")
-      .map((item) => item.trim())
-      .filter((item) => item !== "");
-  if (data.includes('"'))
-    return data
-      .split('"')
-      .map((item) => item.trim())
-      .filter((item) => item !== "");
 };

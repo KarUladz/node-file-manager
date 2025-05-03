@@ -7,7 +7,7 @@ export const normalizePathString = (commandKey, data) => {
 
   let userPath = data;
 
-  if (commandKey !== "rn") userPath = data.replace(commandKey, "").trim();
+  if (commandKey !== "rn" || commandKey !== "cp") userPath = data.replace(commandKey, "").trim();
 
   if (userPath.includes("'") || userPath.includes('"')) {
     userPath = cleanString(userPath);

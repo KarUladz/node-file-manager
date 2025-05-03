@@ -1,6 +1,7 @@
 import process from "node:process";
 
 import {
+  copyFile,
   createDirectory,
   createEmptyFile,
   operationCd,
@@ -24,6 +25,9 @@ export const checkCommandLine = async (data) => {
       break;
     case "cd":
       await operationCd(commandKey, data);
+      break;
+    case "cp":
+      await copyFile(commandKey, data);
       break;
     case "mkdir":
       await createDirectory(commandKey, data);
