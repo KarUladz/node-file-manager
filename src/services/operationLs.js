@@ -17,7 +17,12 @@ export const operationLs = async () => {
           type: file.isDirectory() ? "directory" : file.isFile() ? "file" : "",
         };
       })
-      .filter((item) => item.type !== "");
+      .filter((item) => item.type !== "")
+      .sort((a, b) => {
+        if (a.type > b.type) return 1;
+        if (a.type < b.type) return -1;
+        a.name > b.name ? 1 : -1;
+      });
 
     console.table(filesObjArray);
   } catch (error) {
