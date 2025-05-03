@@ -4,6 +4,7 @@ import {
   copyFile,
   createDirectory,
   createEmptyFile,
+  deleteFile,
   moveFile,
   operationCd,
   operationLs,
@@ -41,6 +42,9 @@ export const checkCommandLine = async (data) => {
       break;
     case "rn":
       await renameFile(commandKey, data);
+      break;
+    case "rm":
+      await deleteFile(commandKey, data);
       break;
     case "up":
       await operationUp();
