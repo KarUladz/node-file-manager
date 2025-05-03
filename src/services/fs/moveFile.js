@@ -37,8 +37,8 @@ export const moveFile = async (commandKey, data) => {
         return;
       } catch (err) {}
 
-      const rs = fs.createReadStream(currentFilePath);
-      const ws = fs.createWriteStream(futureFilePath);
+      const rs = fs.createReadStream(currentFilePath, {encoding: "utf-8"});
+      const ws = fs.createWriteStream(futureFilePath, {encoding: "utf-8"});
 
       rs.on("error", () => {
         ws.end();
