@@ -4,6 +4,7 @@ import {
   copyFile,
   createDirectory,
   createEmptyFile,
+  moveFile,
   operationCd,
   operationLs,
   operationUp,
@@ -31,6 +32,9 @@ export const checkCommandLine = async (data) => {
       break;
     case "mkdir":
       await createDirectory(commandKey, data);
+      break;
+    case "mv":
+      await moveFile(commandKey, data);
       break;
     case "ls":
       await operationLs();

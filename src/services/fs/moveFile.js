@@ -5,7 +5,7 @@ import path from "node:path";
 import { normalizePathString } from "../../utils/normalizePathString.js";
 import { getPathsArrayFromString } from "../../utils/getPathsArrayFromString.js";
 
-export const copyFile = async (commandKey, data) => {
+export const moveFile = async (commandKey, data) => {
   try {
     const updateData = data.replace(commandKey, "");
     let dataArray = [];
@@ -15,7 +15,7 @@ export const copyFile = async (commandKey, data) => {
     } else {
       dataArray = updateData.trim().split(" ");
     }
-
+    console.log(dataArray, updateData);
     if (dataArray.length !== 2) {
       console.log("Invalid input");
       return;
@@ -29,7 +29,7 @@ export const copyFile = async (commandKey, data) => {
 
       const futureFilePath = normalizePathString(
         commandKey,
-        `${dataArray[1]}/copy_${fileName}`
+        `${dataArray[1]}${fileName}`
       );
       try {
         await access(futureFilePath);
@@ -50,6 +50,14 @@ export const copyFile = async (commandKey, data) => {
         rs.destroy();
         console.log("Operation failed");
         return;
+      });
+      ws.on("finish", (err) => {
+        fs.unlink(currentFilePath, (err) => {
+          if (err) {
+            console.log("Operation failed");
+            return;
+          }
+        });
       });
       rs.pipe(ws);
     }
