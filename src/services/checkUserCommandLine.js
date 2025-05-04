@@ -9,12 +9,12 @@ import {
   operationCd,
   operationLs,
   operationUp,
-  osOperations,
   readFile,
   renameFile,
-} from "../services/index.js";
+} from "./fs/index.js";
+import { osOperations } from "./os/osOperations.js";
 
-export const checkCommandLine = async (data) => {
+export const checkUserCommandLine = async (data) => {
   const commandKey = data.split(" ")[0].trim();
   switch (commandKey) {
     case ".exit":

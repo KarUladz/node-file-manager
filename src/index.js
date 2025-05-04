@@ -2,11 +2,11 @@ import readline from "node:readline";
 import process from "node:process";
 
 import { closeFIleManager } from "./services/index.js";
-import {
-  getUserName,
-  checkCommandLine,
-} from "./utils/index.js";
+import { checkUserCommandLine } from "./services/checkUserCommandLine.js";
+
+import { getUserName } from "./utils/index.js";
 import currentPath from "./utils/current-path.js";
+
 
 const appRun = () => {
   const rl = readline.createInterface({
@@ -21,13 +21,11 @@ const appRun = () => {
   );
 
   rl.on("line", async (input) => {
-    await checkCommandLine(input);
-    rl.output.write(
-      `\nYou are currently in ${currentPath.getPath()}\n`
-    );
+    await checkUserCommandLine(input);
+    rl.output.write(`\nYou are currently in ${currentPath.getPath()}\n`);
   });
 
-  process.on("exit", () => closeFIleManager(user));
+  // process.on("exit", () => closeFIleManager(user));
 };
 
 appRun();

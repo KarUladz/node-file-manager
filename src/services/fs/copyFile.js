@@ -29,7 +29,7 @@ export const copyFile = async (commandKey, data) => {
 
       const futureFilePath = normalizePathString(
         commandKey,
-        `${dataArray[1]}/copy_${fileName}`
+        `${dataArray[1]}/(copy)${fileName}`
       );
       try {
         await access(futureFilePath);

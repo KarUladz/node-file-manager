@@ -10,7 +10,7 @@ export const renameFile = async (commandKey, data) => {
   if (updateData.includes("'") || updateData.includes('"')) {
     dataArray = getPathsArrayFromString(updateData);
   } else {
-    dataArray = data.trim().split(" ");
+    dataArray = updateData.trim().split(" ");
   }
 
   if (dataArray.length !== 2) {

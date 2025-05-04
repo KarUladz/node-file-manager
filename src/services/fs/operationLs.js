@@ -1,6 +1,6 @@
 import { readdir } from "node:fs/promises";
 
-import currentPath from "../utils/current-path.js";
+import currentPath from "../../utils/current-path.js";
 
 export const operationLs = async () => {
   try {

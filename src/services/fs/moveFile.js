@@ -15,7 +15,7 @@ export const moveFile = async (commandKey, data) => {
     } else {
       dataArray = updateData.trim().split(" ");
     }
-    console.log(dataArray, updateData);
+
     if (dataArray.length !== 2) {
       console.log("Invalid input");
       return;
@@ -29,7 +29,7 @@ export const moveFile = async (commandKey, data) => {
 
       const futureFilePath = normalizePathString(
         commandKey,
-        `${dataArray[1]}${fileName}`
+        `${dataArray[1]}/${fileName}`
       );
       try {
         await access(futureFilePath);
@@ -37,8 +37,8 @@ export const moveFile = async (commandKey, data) => {
         return;
       } catch (err) {}
 
-      const rs = fs.createReadStream(currentFilePath, {encoding: "utf-8"});
-      const ws = fs.createWriteStream(futureFilePath, {encoding: "utf-8"});
+      const rs = fs.createReadStream(currentFilePath, { encoding: "utf-8" });
+      const ws = fs.createWriteStream(futureFilePath, { encoding: "utf-8" });
 
       rs.on("error", () => {
         ws.end();
@@ -51,6 +51,7 @@ export const moveFile = async (commandKey, data) => {
         console.log("Operation failed");
         return;
       });
+
       ws.on("finish", (err) => {
         fs.unlink(currentFilePath, (err) => {
           if (err) {

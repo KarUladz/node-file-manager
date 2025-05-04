@@ -19,6 +19,6 @@ export const deleteFile = async (commandKey, data) => {
       console.log("Invalid Input! Try again");
     }
   } catch (err) {
-    console.log("Invalid Input! Try again");
+    console.log("Operation failed");
   }
 };
