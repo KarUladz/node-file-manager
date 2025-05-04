@@ -13,6 +13,7 @@ import {
   renameFile,
 } from "./fs/index.js";
 import { osOperations } from "./os/osOperations.js";
+import { getHash } from "./hash/getHash.js";
 
 export const checkUserCommandLine = async (data) => {
   const commandKey = data.split(" ")[0].trim();
@@ -31,6 +32,9 @@ export const checkUserCommandLine = async (data) => {
       break;
     case "cp":
       await copyFile(commandKey, data);
+      break;
+    case "hash":
+      await getHash(commandKey, data);
       break;
     case "mkdir":
       await createDirectory(commandKey, data);

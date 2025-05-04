@@ -15,7 +15,7 @@ export const readFile = async (comandKey, data) => {
         process.stdout.write(data);
       });
       rs.on("error", () => {
-        throw new Error();
+        console.log("Invalid input");
       });
       rs.on("end", () => {
         process.stdout.write("\n");

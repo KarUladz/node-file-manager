@@ -25,7 +25,7 @@ const appRun = () => {
     rl.output.write(`\nYou are currently in ${currentPath.getPath()}\n`);
   });
 
-  // process.on("exit", () => closeFIleManager(user));
+  process.on("exit", () => closeFIleManager(user));
 };
 
 appRun();
