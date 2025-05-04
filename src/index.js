@@ -27,7 +27,7 @@ const appRun = () => {
     );
   });
 
-  // process.on("exit", () => closeFIleManager(user));
+  process.on("exit", () => closeFIleManager(user));
 };
 
 appRun();

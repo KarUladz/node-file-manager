@@ -9,6 +9,7 @@ import {
   operationCd,
   operationLs,
   operationUp,
+  osOperations,
   readFile,
   renameFile,
 } from "../services/index.js";
@@ -39,6 +40,9 @@ export const checkCommandLine = async (data) => {
       break;
     case "ls":
       await operationLs();
+      break;
+    case "os":
+      await osOperations(data);
       break;
     case "rn":
       await renameFile(commandKey, data);
