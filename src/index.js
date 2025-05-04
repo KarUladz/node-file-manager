@@ -7,7 +7,6 @@ import { checkUserCommandLine } from "./services/checkUserCommandLine.js";
 import { getUserName } from "./utils/index.js";
 import currentPath from "./utils/current-path.js";
 
-
 const appRun = () => {
   const rl = readline.createInterface({
     input: process.stdin,
@@ -16,13 +15,15 @@ const appRun = () => {
 
   const user = getUserName();
 
-  rl.output.write(
+  process.stdout.write(
     `Welcome to the File Manager, ${user}!\nYou are currently in ${currentPath.getPath()}\n`
   );
 
   rl.on("line", async (input) => {
     await checkUserCommandLine(input);
-    rl.output.write(`\nYou are currently in ${currentPath.getPath()}\n`);
+    setTimeout(() => {
+      process.stdout.write(`\nYou are currently in ${currentPath.getPath()}\n`);
+    }, 10);
   });
 
   process.on("exit", () => closeFIleManager(user));

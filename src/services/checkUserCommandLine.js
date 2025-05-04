@@ -58,7 +58,7 @@ export const checkUserCommandLine = async (data) => {
       await operationUp();
       break;
     default:
-      process.stdout.write("\nInvalid input! Try again:\n");
+      process.stdout.write("Invalid input! Try again:");
       break;
   }
 };

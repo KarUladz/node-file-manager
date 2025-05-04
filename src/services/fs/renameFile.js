@@ -22,17 +22,21 @@ export const renameFile = async (commandKey, data) => {
   const futureFilePath = normalizePathString(commandKey, dataArray[1]);
 
   try {
-    await fs.access(currentFilePath);
-    await fs
-      .stat(futureFilePath)
-      .then(() => {
-        throw new Error();
-      })
-      .catch(async () => {
-        await fs.rename(currentFilePath, futureFilePath).catch(() => {
+    const stats = await fs.stat(currentFilePath);
+    if (stats.isFile()) {
+      await fs
+        .stat(futureFilePath)
+        .then(() => {
           throw new Error();
+        })
+        .catch(async () => {
+          await fs.rename(currentFilePath, futureFilePath).catch(() => {
+            throw new Error();
+          });
         });
-      });
+    } else {
+      console.log("Invalid input");
+    }
   } catch {
     console.log("Operation failed");
   }
