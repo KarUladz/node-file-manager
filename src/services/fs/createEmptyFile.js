@@ -4,8 +4,8 @@ import currentPath from "../../utils/current-path.js";
 
 import { normalizePathString } from "../../utils/normalizePathString.js";
 
-export const createEmptyFile = async (comandKey, data) => {
-  const normalizePath = normalizePathString(comandKey, data);
+export const createEmptyFile = async (commandKey, data) => {
+  const normalizePath = normalizePathString(commandKey, data);
   const pathNow = path.normalize(
     `${currentPath.getPath()}/${path.basename(normalizePath)}`
   );
@@ -16,5 +16,6 @@ export const createEmptyFile = async (comandKey, data) => {
     });
   } else {
     console.log("Invalid input");
+    return;
   }
 };

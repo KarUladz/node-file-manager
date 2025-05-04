@@ -4,8 +4,8 @@ import path from "node:path";
 import { normalizePathString } from "../../utils/normalizePathString.js";
 import currentPath from "../../utils/current-path.js";
 
-export const createDirectory = async (comandKey, data) => {
-  const normalizePath = normalizePathString(comandKey, data);
+export const createDirectory = async (commandKey, data) => {
+  const normalizePath = normalizePathString(commandKey, data);
   const pathNow = path.normalize(
     `${currentPath.getPath()}/${path.basename(normalizePath)}`
   );
@@ -14,5 +14,6 @@ export const createDirectory = async (comandKey, data) => {
     await fs.mkdir(normalizePath, { recursive: false });
   } else {
     console.log("Operation failed");
+    return
   }
 };

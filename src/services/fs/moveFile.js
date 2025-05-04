@@ -64,5 +64,6 @@ export const moveFile = async (commandKey, data) => {
     }
   } catch (err) {
     console.log("Operation failed");
+    return;
   }
 };

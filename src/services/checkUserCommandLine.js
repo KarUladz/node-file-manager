@@ -14,6 +14,7 @@ import {
 } from "./fs/index.js";
 import { osOperations } from "./os/osOperations.js";
 import { getHash } from "./hash/getHash.js";
+import { compressFile, decompressFile } from "./zip/index.js";
 
 export const checkUserCommandLine = async (data) => {
   const commandKey = data.split(" ")[0].trim();
@@ -30,8 +31,14 @@ export const checkUserCommandLine = async (data) => {
     case "cd":
       await operationCd(commandKey, data);
       break;
+    case "compress":
+      await compressFile(commandKey, data);
+      break;
     case "cp":
       await copyFile(commandKey, data);
+      break;
+    case "decompress":
+      await decompressFile(commandKey, data);
       break;
     case "hash":
       await getHash(commandKey, data);

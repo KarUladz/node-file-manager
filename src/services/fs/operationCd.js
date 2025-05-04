@@ -3,8 +3,8 @@ import { access, stat } from "node:fs/promises";
 import currentPath from "../../utils/current-path.js";
 import { normalizePathString } from "../../utils/normalizePathString.js";
 
-export const operationCd = async (comandKey, data) => {
-  const normalizePath = normalizePathString(comandKey, data);
+export const operationCd = async (commandKey, data) => {
+  const normalizePath = normalizePathString(commandKey, data);
 
   try {
     await access(normalizePath);

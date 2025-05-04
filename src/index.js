@@ -21,9 +21,7 @@ const appRun = () => {
 
   rl.on("line", async (input) => {
     await checkUserCommandLine(input);
-    setTimeout(() => {
-      process.stdout.write(`\nYou are currently in ${currentPath.getPath()}\n`);
-    }, 10);
+    process.stdout.write(`\nYou are currently in ${currentPath.getPath()}\n`);
   });
 
   process.on("exit", () => closeFIleManager(user));

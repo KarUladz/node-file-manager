@@ -39,5 +39,6 @@ export const renameFile = async (commandKey, data) => {
     }
   } catch {
     console.log("Operation failed");
+    return;
   }
 };
