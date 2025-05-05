@@ -2,6 +2,7 @@ import fs from "node:fs";
 import { stat } from "node:fs/promises";
 
 import { normalizePathString } from "../../utils/normalizePathString.js";
+import { invalidInput, operationFailed } from "../../utils/index.js";
 
 export const deleteFile = async (commandKey, data) => {
   try {
@@ -11,16 +12,16 @@ export const deleteFile = async (commandKey, data) => {
     if (stats.isFile()) {
       fs.unlink(currentFilePath, (err) => {
         if (err) {
-          console.log("Operation failed");
+          operationFailed(err.message);
           return;
         }
       });
     } else {
-      console.log("Invalid Input! Try again");
+      invalidInput("Try again");
       return;
     }
   } catch (err) {
-    console.log("Operation failed");
+    operationFailed(err.message);
     return;
   }
 };

@@ -1,6 +1,8 @@
 import { createReadStream } from "node:fs";
 import { access, stat } from "node:fs/promises";
+
 import { normalizePathString } from "../../utils/normalizePathString.js";
+import { invalidInput, operationFailed } from "../../utils/index.js";
 
 export const readFile = async (commandKey, data) => {
   const normalizePath = normalizePathString(commandKey, data);
@@ -14,8 +16,9 @@ export const readFile = async (commandKey, data) => {
       rs.on("data", (data) => {
         process.stdout.write(data);
       });
-      rs.on("error", () => {
-        console.log("Invalid input");
+      rs.on("error", (err) => {
+        invalidInput(err.message);
+        return;
       });
       rs.on("end", () => {
         process.stdout.write("\n");
@@ -23,7 +26,8 @@ export const readFile = async (commandKey, data) => {
     } else {
       throw new Error();
     }
-  } catch (error) {
-    process.stdout.write("Operation failed!\n");
+  } catch (err) {
+    operationFailed(err.message);
+    return;
   }
 };

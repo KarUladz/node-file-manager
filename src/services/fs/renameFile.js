@@ -2,6 +2,7 @@ import fs from "node:fs/promises";
 
 import { normalizePathString } from "../../utils/normalizePathString.js";
 import { getPathsArrayFromString } from "../../utils/getPathsArrayFromString.js";
+import { invalidInput, operationFailed } from "../../utils/index.js";
 
 export const renameFile = async (commandKey, data) => {
   const updateData = data.replace(commandKey, "");
@@ -14,7 +15,7 @@ export const renameFile = async (commandKey, data) => {
   }
 
   if (dataArray.length !== 2) {
-    console.log("Invalid input");
+    invalidInput("Too many arguments, try using quotation marks.");
     return;
   }
 
@@ -35,10 +36,11 @@ export const renameFile = async (commandKey, data) => {
           });
         });
     } else {
-      console.log("Invalid input");
+      invalidInput();
+      return;
     }
-  } catch {
-    console.log("Operation failed");
+  } catch (err) {
+    operationFailed(err.message);
     return;
   }
 };

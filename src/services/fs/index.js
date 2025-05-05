@@ -5,6 +5,6 @@ export * from "./renameFile.js";
 export * from "./copyFile.js";
 export * from "./moveFile.js";
 export * from "./deleteFile.js";
-export * from './operationCd.js'
-export * from './operationLs.js'
-export * from './operationUp.js'
+export * from "./operationCd.js";
+export * from "./operationLs.js";
+export * from "./operationUp.js";

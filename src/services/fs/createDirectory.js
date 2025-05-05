@@ -3,6 +3,7 @@ import path from "node:path";
 
 import { normalizePathString } from "../../utils/normalizePathString.js";
 import currentPath from "../../utils/current-path.js";
+import { invalidInput, operationFailed } from "../../utils/index.js";
 
 export const createDirectory = async (commandKey, data) => {
   const normalizePath = normalizePathString(commandKey, data);
@@ -10,10 +11,15 @@ export const createDirectory = async (commandKey, data) => {
     `${currentPath.getPath()}/${path.basename(normalizePath)}`
   );
 
-  if (pathNow === normalizePath) {
-    await fs.mkdir(normalizePath, { recursive: false });
-  } else {
-    console.log("Operation failed");
-    return
+  try {
+    if (pathNow === normalizePath) {
+      await fs.mkdir(normalizePath, { recursive: false });
+    } else {
+      invalidInput("Incorrect file path");
+      return;
+    }
+  } catch (err) {
+    operationFailed(err.message);
+    return;
   }
 };

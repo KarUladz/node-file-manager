@@ -1,11 +1,12 @@
 import fs from "node:fs";
 import { stat, access } from "node:fs/promises";
 import path from "node:path";
+import { pipeline } from "node:stream/promises";
 import { createBrotliDecompress } from "node:zlib";
 
 import { normalizePathString } from "../../utils/normalizePathString.js";
 import { getPathsArrayFromString } from "../../utils/getPathsArrayFromString.js";
-import { pipeline } from "node:stream/promises";
+import { invalidInput, operationFailed } from "../../utils/index.js";
 
 export const decompressFile = async (commandKey, data) => {
   try {
@@ -19,7 +20,7 @@ export const decompressFile = async (commandKey, data) => {
     }
 
     if (dataArray.length !== 2) {
-      console.log("Invalid input");
+      invalidInput("Too many arguments, try using quotation marks.");
       return;
     }
 
@@ -27,7 +28,7 @@ export const decompressFile = async (commandKey, data) => {
 
     const stats = await stat(currentFilePath);
     if (!stats.isFile()) {
-      console.log("Invalid input");
+      invalidInput("Object is not a file");
       return;
     }
 
@@ -42,13 +43,13 @@ export const decompressFile = async (commandKey, data) => {
     if (futureFilePath.endsWith(".br")) {
       updatedFuturePath = futureFilePath.slice(0, -3);
     } else {
-      console.log("Invalid input");
+      invalidInput("File was not compressed");
       return;
     }
 
     try {
       await access(updatedFuturePath);
-      console.log("Operation failed. File already exists");
+      operationFailed("File already exists");
       return;
     } catch (error) {}
 
@@ -57,11 +58,11 @@ export const decompressFile = async (commandKey, data) => {
       const ws = fs.createWriteStream(updatedFuturePath);
       await pipeline(rs, createBrotliDecompress(), ws);
     } catch (error) {
-      console.log("Operation failed");
+      operationFailed(error.message);
       return;
     }
   } catch (error) {
-    console.log("Operation failed");
+    operationFailed(error.message);
     return;
   }
 };

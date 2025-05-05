@@ -3,6 +3,7 @@ import path from "node:path";
 import currentPath from "../../utils/current-path.js";
 
 import { normalizePathString } from "../../utils/normalizePathString.js";
+import { invalidInput, operationFailed } from "../../utils/index.js";
 
 export const createEmptyFile = async (commandKey, data) => {
   const normalizePath = normalizePathString(commandKey, data);
@@ -12,10 +13,13 @@ export const createEmptyFile = async (commandKey, data) => {
 
   if (pathNow === normalizePath) {
     fs.open(normalizePath, "ax", (err, _) => {
-      if (err) console.log("Operation failed! File already exists\n");
+      if (err) {
+        operationFailed("File already exists");
+        return;
+      }
     });
   } else {
-    console.log("Invalid input");
+    invalidInput("Incorrect file path");
     return;
   }
 };

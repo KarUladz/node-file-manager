@@ -2,6 +2,7 @@ import { access, stat } from "node:fs/promises";
 
 import currentPath from "../../utils/current-path.js";
 import { normalizePathString } from "../../utils/normalizePathString.js";
+import { invalidInput } from "../../utils/index.js";
 
 export const operationCd = async (commandKey, data) => {
   const normalizePath = normalizePathString(commandKey, data);
@@ -13,7 +14,8 @@ export const operationCd = async (commandKey, data) => {
     else {
       throw new Error();
     }
-  } catch (error) {
-    process.stdout.write("Invalid input! Try again:\n");
+  } catch (err) {
+    invalidInput(err.message);
+    return;
   }
 };

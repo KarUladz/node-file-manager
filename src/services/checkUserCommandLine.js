@@ -16,6 +16,8 @@ import { osOperations } from "./os/osOperations.js";
 import { getHash } from "./hash/getHash.js";
 import { compressFile, decompressFile } from "./zip/index.js";
 
+import { invalidInput } from "../utils/index.js";
+
 export const checkUserCommandLine = async (data) => {
   const commandKey = data.split(" ")[0].trim();
   switch (commandKey) {
@@ -65,7 +67,7 @@ export const checkUserCommandLine = async (data) => {
       await operationUp();
       break;
     default:
-      process.stdout.write("Invalid input! Try again:");
+      invalidInput("Try again:");
       break;
   }
 };

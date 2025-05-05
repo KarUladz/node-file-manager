@@ -1,4 +1,5 @@
 import os from "os";
+import { invalidInput } from "../../utils/index.js";
 
 export const osOperations = async (data) => {
   const params = data.trim().split("--")[1];
@@ -37,6 +38,7 @@ export const osOperations = async (data) => {
       console.log("-".repeat(22));
       break;
     default:
-      process.stdout.write("Invalid input\n");
+      invalidInput('Try again:');
+      break;
   }
 };

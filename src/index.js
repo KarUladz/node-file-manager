@@ -1,4 +1,4 @@
-import readline from "node:readline";
+import readline from "node:readline/promises";
 import process from "node:process";
 
 import { closeFIleManager } from "./services/index.js";
@@ -11,17 +11,24 @@ const appRun = () => {
   const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
+    prompt: "\x1b[32m> \x1b[0m",
   });
 
   const user = getUserName();
 
-  process.stdout.write(
-    `Welcome to the File Manager, ${user}!\nYou are currently in ${currentPath.getPath()}\n`
+  console.log(
+    `\x1b[36mWelcome to the File Manager, ${user}!\nYou are currently in ${currentPath.getPath()}\x1b[0m`
   );
+  rl.prompt();
 
   rl.on("line", async (input) => {
     await checkUserCommandLine(input);
-    process.stdout.write(`\nYou are currently in ${currentPath.getPath()}\n`);
+    setTimeout(() => {
+      console.log(
+        `\n\x1b[35mYou are currently in ${currentPath.getPath()}\x1b[0m`
+      );
+      rl.prompt();
+    }, 10);
   });
 
   process.on("exit", () => closeFIleManager(user));

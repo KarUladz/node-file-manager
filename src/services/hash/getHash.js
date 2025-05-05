@@ -2,6 +2,7 @@ import crypto from "node:crypto";
 import fs from "node:fs";
 
 import { normalizePathString } from "../../utils/normalizePathString.js";
+import { invalidInput, operationFailed } from "../../utils/index.js";
 
 export const getHash = async (commandKey, data) => {
   try {
@@ -19,10 +20,11 @@ export const getHash = async (commandKey, data) => {
       console.log(`${hash.digest("hex")}`);
     });
 
-    rs.on("error", () => {
-      console.log("Invalid input");
+    rs.on("error", (err) => {
+      invalidInput(err.message);
     });
-  } catch (error) {
-    console.log("Operation failed");
+  } catch (err) {
+    operationFailed(err.message);
+    return;
   }
 };

@@ -25,7 +25,7 @@ export const operationLs = async () => {
       });
 
     console.table(filesObjArray);
-  } catch (error) {
-    process.stdout.write("Operation failed\n");
+  } catch (err) {
+    operationFailed(err.message);
   }
 };
