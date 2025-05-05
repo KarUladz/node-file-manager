@@ -1,8 +1,5 @@
-import fs from "node:fs";
-import { access, stat } from "node:fs/promises";
+import { stat } from "node:fs/promises";
 import path from "node:path";
-import { pipeline } from "node:stream/promises";
-import { createBrotliCompress } from "node:zlib";
 
 import { normalizePathString } from "../../utils/normalizePathString.js";
 import { getPathsArrayFromString } from "../../utils/getPathsArrayFromString.js";
@@ -67,7 +64,9 @@ export const checkZipPath = async (commandKey, data) => {
 
     const futureFilePath = normalizePathString(
       commandKey,
-      `${dataArray[1]}/${fileName}${commandKey === "compress" ? ".br" : ""}`.trim()
+      `${dataArray[1]}/${fileName}${
+        commandKey === "compress" ? ".br" : ""
+      }`.trim()
     );
 
     if (commandKey === "decompress") {
