@@ -24,11 +24,26 @@ export const decompressFile = async (commandKey, data) => {
       return;
     }
 
-    const currentFilePath = normalizePathString(commandKey, dataArray[0]);
+    const currentFilePath = normalizePathString(
+      commandKey,
+      dataArray[0].trim()
+    );
+    const userFilePath = normalizePathString(commandKey, dataArray[1].trim());
 
-    const stats = await stat(currentFilePath);
-    if (!stats.isFile()) {
-      invalidInput("Object is not a file");
+    if (!currentFilePath.endsWith(".br")) {
+      operationFailed("File was not compressed.");
+      return;
+    }
+
+    const statsCurPath = await stat(currentFilePath);
+    const statsUserPath = await stat(userFilePath);
+    if (!statsCurPath.isFile()) {
+      operationFailed("Object is not a file");
+      return;
+    }
+
+    if (!statsUserPath.isDirectory()) {
+      operationFailed("Destination is not a directory");
       return;
     }
 
@@ -40,12 +55,8 @@ export const decompressFile = async (commandKey, data) => {
     );
     let updatedFuturePath = futureFilePath;
 
-    if (futureFilePath.endsWith(".br")) {
+    if (futureFilePath.endsWith(".br"))
       updatedFuturePath = futureFilePath.slice(0, -3);
-    } else {
-      invalidInput("File was not compressed");
-      return;
-    }
 
     try {
       await access(updatedFuturePath);

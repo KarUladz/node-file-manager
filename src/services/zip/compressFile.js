@@ -1,5 +1,5 @@
 import fs from "node:fs";
-import { access, stat, writeFile } from "node:fs/promises";
+import { access, stat } from "node:fs/promises";
 import path from "node:path";
 import { pipeline } from "node:stream/promises";
 import { createBrotliCompress } from "node:zlib";
@@ -24,11 +24,18 @@ export const compressFile = async (commandKey, data) => {
       return;
     }
 
-    const currentFilePath = normalizePathString(commandKey, dataArray[0]);
+    const currentFilePath = normalizePathString(commandKey, dataArray[0].trim());
+    const userFilePath = normalizePathString(commandKey, dataArray[1].trim());
+    
+    const statsCurPath = await stat(currentFilePath);
+    const statsUserPath = await stat(userFilePath);
 
-    const stats = await stat(currentFilePath);
-    if (!stats.isFile()) {
-      invalidInput("Object is not a file");
+    if (!statsCurPath.isFile()) {
+      operationFailed("Object is not a file");
+      return;
+    }
+    if (!statsUserPath.isDirectory()) {
+      operationFailed("Destination is not a directory");
       return;
     }
     if (currentFilePath.endsWith(".br")) {
@@ -54,11 +61,11 @@ export const compressFile = async (commandKey, data) => {
       const ws = fs.createWriteStream(futureFilePath);
       await pipeline(rs, createBrotliCompress(), ws);
     } catch (error) {
-      operationFailed(error.mesage);
+      operationFailed(error.message);
       return;
     }
   } catch (error) {
-    operationFailed(error.mesage);
+    operationFailed(error.message);
     return;
   }
 };
