@@ -3,10 +3,11 @@ import pc from "node:process";
 let userName = "";
 
 export const getUserName = () => {
-  if (!userName.length) {
-    const userData = pc.argv.filter((el) => el.includes("--username"));
-    userName = userData.length ? userData[0].split("=")[1] : "Mystery visitor";
-    return userName;
+  let userName = "Mystery visitor";
+  const userData = pc.argv.filter((el) => el.includes("--username="));
+  if (userData.length) {
+    const index = userData[0].indexOf("=");
+    userName = userData[0].slice(index + 1).trim() || userName;
   }
 
   return userName;
