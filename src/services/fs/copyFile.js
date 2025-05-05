@@ -18,7 +18,7 @@ export const copyFile = async (commandKey, data) => {
     }
 
     if (dataArray.length !== 2) {
-      invalidInput("Too many arguments, try using quotation marks.");
+      invalidInput("Too many arguments(or too little), try using quotation marks.");
       return;
     }
 
