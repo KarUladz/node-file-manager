@@ -1,64 +1,32 @@
 import fs from "node:fs";
-import { access, stat } from "node:fs/promises";
-import path from "node:path";
+import { access } from "node:fs/promises";
 import { pipeline } from "node:stream/promises";
 import { createBrotliCompress } from "node:zlib";
 
-import { normalizePathString } from "../../utils/normalizePathString.js";
-import { getPathsArrayFromString } from "../../utils/getPathsArrayFromString.js";
-import { invalidInput, operationFailed } from "../../utils/index.js";
+import { operationFailed } from "../../utils/index.js";
+import { checkZipPath } from "./zip.utils.js";
 
 export const compressFile = async (commandKey, data) => {
   try {
-    const updateData = data.replace(commandKey, "");
-    let dataArray = [];
-
-    if (updateData.includes("'") || updateData.includes('"')) {
-      dataArray = getPathsArrayFromString(updateData);
-    } else {
-      dataArray = updateData.trim().split(" ");
-    }
-
-    if (dataArray.length !== 2) {
-      invalidInput("Too many arguments, try using quotation marks.");
-      return;
-    }
-
-    const currentFilePath = normalizePathString(commandKey, dataArray[0].trim());
-    const userFilePath = normalizePathString(commandKey, dataArray[1].trim());
-    
-    const statsCurPath = await stat(currentFilePath);
-    const statsUserPath = await stat(userFilePath);
-
-    if (!statsCurPath.isFile()) {
-      operationFailed("Object is not a file");
-      return;
-    }
-    if (!statsUserPath.isDirectory()) {
-      operationFailed("Destination is not a directory");
-      return;
-    }
-    if (currentFilePath.endsWith(".br")) {
-      invalidInput("File already compressed.");
-      return;
-    }
-
-    const fileName = path.basename(currentFilePath);
-
-    const futureFilePath = normalizePathString(
+    const { currentPath, futurePath, error } = await checkZipPath(
       commandKey,
-      `${dataArray[1]}/${fileName}.br`
+      data
     );
 
+    if (error) {
+      throw new Error(error);
+    }
+    if (!currentPath || !futurePath) return;
+
     try {
-      await access(futureFilePath);
+      await access(futurePath);
       operationFailed("File already exists");
       return;
     } catch (error) {}
 
     try {
-      const rs = fs.createReadStream(currentFilePath);
-      const ws = fs.createWriteStream(futureFilePath);
+      const rs = fs.createReadStream(currentPath);
+      const ws = fs.createWriteStream(futurePath);
       await pipeline(rs, createBrotliCompress(), ws);
     } catch (error) {
       operationFailed(error.message);

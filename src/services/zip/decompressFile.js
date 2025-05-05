@@ -1,72 +1,32 @@
 import fs from "node:fs";
-import { stat, access } from "node:fs/promises";
-import path from "node:path";
+import { access } from "node:fs/promises";
 import { pipeline } from "node:stream/promises";
 import { createBrotliDecompress } from "node:zlib";
 
-import { normalizePathString } from "../../utils/normalizePathString.js";
-import { getPathsArrayFromString } from "../../utils/getPathsArrayFromString.js";
-import { invalidInput, operationFailed } from "../../utils/index.js";
+import { operationFailed } from "../../utils/index.js";
+import { checkZipPath } from "./zip.utils.js";
 
 export const decompressFile = async (commandKey, data) => {
   try {
-    const updateData = data.replace(commandKey, "");
-    let dataArray = [];
-
-    if (updateData.includes("'") || updateData.includes('"')) {
-      dataArray = getPathsArrayFromString(updateData);
-    } else {
-      dataArray = updateData.trim().split(" ");
-    }
-
-    if (dataArray.length !== 2) {
-      invalidInput("Too many arguments, try using quotation marks.");
-      return;
-    }
-
-    const currentFilePath = normalizePathString(
+    const { currentPath, futurePath, error } = await checkZipPath(
       commandKey,
-      dataArray[0].trim()
+      data
     );
-    const userFilePath = normalizePathString(commandKey, dataArray[1].trim());
 
-    if (!currentFilePath.endsWith(".br")) {
-      operationFailed("File was not compressed.");
-      return;
+    if (error) {
+      throw new Error(error);
     }
-
-    const statsCurPath = await stat(currentFilePath);
-    const statsUserPath = await stat(userFilePath);
-    if (!statsCurPath.isFile()) {
-      operationFailed("Object is not a file");
-      return;
-    }
-
-    if (!statsUserPath.isDirectory()) {
-      operationFailed("Destination is not a directory");
-      return;
-    }
-
-    const fileName = path.basename(currentFilePath);
-
-    const futureFilePath = normalizePathString(
-      commandKey,
-      `${dataArray[1]}/${fileName}`
-    );
-    let updatedFuturePath = futureFilePath;
-
-    if (futureFilePath.endsWith(".br"))
-      updatedFuturePath = futureFilePath.slice(0, -3);
+    if (!currentPath || !futurePath) return;
 
     try {
-      await access(updatedFuturePath);
+      await access(futurePath);
       operationFailed("File already exists");
       return;
     } catch (error) {}
 
     try {
-      const rs = fs.createReadStream(currentFilePath);
-      const ws = fs.createWriteStream(updatedFuturePath);
+      const rs = fs.createReadStream(currentPath);
+      const ws = fs.createWriteStream(futurePath);
       await pipeline(rs, createBrotliDecompress(), ws);
     } catch (error) {
       operationFailed(error.message);
