@@ -1,7 +1,5 @@
 import pc from "node:process";
 
-let userName = "";
-
 export const getUserName = () => {
   let userName = "Mystery visitor";
   const userData = pc.argv.filter((el) => el.includes("--username="));
